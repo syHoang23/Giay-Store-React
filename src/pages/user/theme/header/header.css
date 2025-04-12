@@ -1,0 +1,60 @@
+
+#header {
+    width: 100%;
+   
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;    
+}
+
+#menu {
+    list-style:none;
+    display: flex;
+}
+
+#menu .item {
+    margin:0px 25px;
+}
+
+#menu .item a {
+    color:#626A67;
+    text-decoration: none;
+}
+
+
+#actions {
+    width: auto;
+    display: flex;
+    gap: 22px; /* Thêm khoảng cách giữa các nút */
+}
+#actions .item .button{
+    margin-left:22px;
+    
+}
+.primary-button {
+    --primary-color: #645bff;
+    --secondary-color: #fff;
+    --hover-color: #007bff;
+    --arrow-width: 10px;
+    --arrow-stroke: 2px;
+    box-sizing: border-box;
+    border: 0;
+    border-radius: 20px;
+    color: var(--secondary-color);
+    padding: 0.5em 1.2em; /* Giảm padding để nút nhỏ hơn */
+    background: var(--primary-color);
+    display: flex;
+    transition: 0.2s background;
+    align-items: center;
+    gap: 0.6em;
+    font-weight: bold;
+    height: 40px; /* Đặt chiều cao của nút */
+}
+
+.primary-button:hover {
+    background-color: var(--hover-color);
+    color: #fff;
+}
+
+

@@ -1,0 +1,74 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+.boy {
+    margin-top: 10px;
+}
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.product {
+    background-color: #eee; /* Màu nền của phần chi tiết sản phẩm */
+    padding: 20px;
+    margin-top: 10PX;
+    border-radius: 10px;
+}
+
+.brand {
+    font-size: 13px;
+    color: #000; /* Màu chữ đen */
+}
+
+.price {
+    font-size: 16px;
+    font-weight: bold;
+    color: red; /* Màu đỏ */
+}
+
+.about {
+    font-size: 14px;
+    color: #000; /* Màu chữ đen */
+}
+
+.specs {
+    margin-top: 20px;
+}
+
+.specs h6 {
+    font-size: 16px;
+    color: #000; /* Màu chữ đen */
+    margin-bottom: 10px;
+}
+
+.specs ul {
+    list-style: none;
+    padding: 0;
+}
+
+.specs li {
+    font-size: 14px;
+    color: #000; /* Màu chữ đen */
+    margin-bottom: 5px;
+}
+
+.btn-danger {
+    background-color: #ff0000 !important;
+    border-color: #ff0000 !important;
+}
+
+.btn-danger:hover {
+    background-color: #da0606 !important;
+    border-color: #da0606 !important;
+}
+#input {
+    padding-bottom: 10px;
+}
+.btn-danger:focus {
+    box-shadow: none;
+}
+
+.cart i {
+    margin-right: 10px;
+}
