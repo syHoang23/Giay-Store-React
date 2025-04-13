@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-
+const API_URL = process.env.REACT_APP_API_URL;
 const EditProductComponent = () => {
     // Lấy Id của sản phẩm từ URL sử dụng useParams
     const { Id } = useParams();
@@ -31,7 +31,7 @@ const EditProductComponent = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await fetch(`http://localhost:3002/products/${Id}`);
+                const response = await fetch(`${API_URL}/products/${Id}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -50,7 +50,7 @@ const EditProductComponent = () => {
         };
         const fetchLoaiGiay = async () => {
             try {
-                const response = await fetch('http://localhost:3002/admin/loai-giay');
+                const response = await fetch(`${API_URL}/admin/loai-giay`);
                 const data = await response.json();
                 setLoaiGiayList(data);
             } catch (error) {
@@ -61,7 +61,7 @@ const EditProductComponent = () => {
 
         const fetchTenHang = async () => {
             try {
-                const response = await fetch('http://localhost:3002/admin/ten-hang');
+                const response = await fetch(`${API_URL}/admin/ten-hang`);
                 const data = await response.json();
                 setTenHangList(data);
             } catch (error) {
@@ -87,7 +87,7 @@ const EditProductComponent = () => {
           return;
         }
         try {
-          const response = await fetch(`http://localhost:3002/admin/product/${Id}`, {
+          const response = await fetch(`${API_URL}/admin/product/${Id}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',

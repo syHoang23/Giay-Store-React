@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+const API_URL = process.env.REACT_APP_API_URL;
 const CartComponent= () => {
     // State để lưu thông tin giỏ hàng và tổng subtotal
 const [cart, setCart] = useState([]);
@@ -22,7 +22,7 @@ tenKhachHang=loggedInUser_NAME;
 // Hàm fetch thông tin giỏ hàng từ server
 const fetchCart = async () => {
     try {
-        const response = await fetch('http://localhost:3002/cart/cart-info', {
+        const response = await fetch(`${API_URL}/cart/cart-info`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ const handleConfirmCheckout = async () => {
     alert("Đã xác nhận địa chỉ: " + address);
     setIsModalOpen(false); // Đóng modal sau khi xác nhận
     try {
-        const response = await fetch('http://localhost:3002/order/adds', {
+        const response = await fetch(`${API_URL}/order/adds`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -87,7 +87,7 @@ const handleConfirmCheckout = async () => {
         if (response.ok) {
             alert('Đơn hàng được khởi tạo thành công!');
             try {
-                const responses = await fetch('http://localhost:3002/cart/delete-all-item', {
+                const responses = await fetch(`${API_URL}/cart/delete-all-item`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -118,7 +118,7 @@ const handleConfirmCheckout = async () => {
 // Hàm xử lý khi người dùng xóa một sản phẩm khỏi giỏ hàng
 const handleDeleteItem = async (KhachHangID,SanPhamID) => {
     try {
-        const response = await fetch('http://localhost:3002/cart/delete-item', {
+        const response = await fetch(`${API_URL}/cart/delete-item`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

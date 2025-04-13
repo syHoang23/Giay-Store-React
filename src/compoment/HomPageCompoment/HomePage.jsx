@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
-
+const API_URL = process.env.REACT_APP_API_URL;
 const HomePageCompoment = () => {
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -10,7 +10,7 @@ const HomePageCompoment = () => {
         // Hàm để lấy dữ liệu từ máy chủ
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:3002/products');
+                const response = await fetch(`${API_URL}/products`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-
+const API_URL = process.env.REACT_APP_API_URL;
 // Component để hiển thị danh sách sản phẩm
 const ListProduct = () => {
     // State để lưu danh sách sản phẩm và trang hiện tại
@@ -24,7 +24,7 @@ const ListProduct = () => {
     // Hàm fetch dữ liệu sản phẩm từ server
     const fetchData = async () => {
         try {
-            const response = await fetch('http://localhost:3002/products');
+            const response = await fetch(`${API_URL}/products`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -50,7 +50,7 @@ const ListProduct = () => {
     // Hàm xử lý khi người dùng nhấn nút "Delete"
     const handleDeleteItem = async (SanPhamID,TenSanPham) => {
         try {
-            const response = await fetch('http://localhost:3002/admin/delete-item', {
+            const response = await fetch(`${API_URL}/admin/delete-item`, {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',

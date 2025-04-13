@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
-
+const API_URL = process.env.REACT_APP_API_URL;
 const DetailOrderComponent= () => {
     const { Id } = useParams(); // Lấy thông tin ID sản phẩm từ URL
     const [order, setOrder] = useState(null); // State để lưu thông tin sản phẩm
@@ -17,7 +17,7 @@ const DetailOrderComponent= () => {
         const fetchOrder = async () => {
             try {
                 // Gọi API để lấy thông tin sản phẩm dựa trên Id được truyền từ URL
-                const response = await fetch(`http://localhost:3002/order/${Id}`);
+                const response = await fetch(`${API_URL}/order/${Id}`);
                 // Kiểm tra nếu response không thành công, ném ra một lỗi
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -36,7 +36,7 @@ const DetailOrderComponent= () => {
     }, [Id]);
     const handleCancel = async (OrderID) => {
         try {
-            const response = await fetch('http://localhost:3002/order/cancel-order', {
+            const response = await fetch(`${API_URL}/order/cancel-order`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { Link } from 'react-router-dom';
-
+const API_URL = process.env.REACT_APP_API_URL;
 const OrderCompoment= () => {
 const [order, setOrder] = useState([]);
 // const [totalSubtotal, setTotalSubtotal] = useState(0);
@@ -22,7 +22,7 @@ const loggedInUser_ID = sessionStorage.getItem('USER_ID');
 // Hàm fetch thông tin giỏ hàng từ server
 const fetchCart = async () => {
     try {
-        const response = await fetch('http://localhost:3002/order/order-info', {
+        const response = await fetch(`${API_URL}/order/order-info`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

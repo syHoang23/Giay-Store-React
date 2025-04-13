@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+const API_URL = process.env.REACT_APP_API_URL;
 const ADDPRODUCT = () => {
     // State để lưu thông tin sản phẩm mới
     const [TenSanPham, setTenSanPham] = useState('');
@@ -18,7 +18,7 @@ const ADDPRODUCT = () => {
     useEffect(() => {
         const fetchLoaiGiay = async () => {
             try {
-                const response = await fetch('http://localhost:3002/admin/loai-giay');
+                const response = await fetch(`${API_URL}/admin/loai-giay`);
                 const data = await response.json();
                 setLoaiGiayList(data);
             } catch (error) {
@@ -29,7 +29,7 @@ const ADDPRODUCT = () => {
 
         const fetchTenHang = async () => {
             try {
-                const response = await fetch('http://localhost:3002/admin/ten-hang');
+                const response = await fetch(`${API_URL}/admin/ten-hang`);
                 const data = await response.json();
                 setTenHangList(data);
             } catch (error) {
@@ -52,7 +52,7 @@ const ADDPRODUCT = () => {
           return;
         }
         try {
-          const response = await fetch('http://localhost:3002/admin/product', {
+          const response = await fetch(`${API_URL}/admin/product`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

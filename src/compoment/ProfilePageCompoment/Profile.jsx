@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
-
+const API_URL = process.env.REACT_APP_API_URL;
 const ProfileCompoment = () => {
   const [user, setUser] = useState(null);
   const { Id } = useParams(); 
@@ -8,7 +8,7 @@ const ProfileCompoment = () => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await fetch('http://localhost:3002/users/user-info', {
+        const response = await fetch(`${API_URL}/users/user-info`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

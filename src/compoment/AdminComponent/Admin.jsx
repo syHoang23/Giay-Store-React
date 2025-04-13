@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+const API_URL = process.env.REACT_APP_API_URL;
 const AdminDashboard = () => {
     const [totals, setTotals] = useState({ totalCustomers: 0, totalProducts: 0, recentAction: [] });
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:3002/admin');
+                const response = await fetch(`${API_URL}/admin`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

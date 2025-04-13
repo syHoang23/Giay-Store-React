@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-
+const API_URL = process.env.REACT_APP_API_URL;
 const EditOrderComponent = () => {
     // Lấy Id của sản phẩm từ URL sử dụng useParams
     const { Id } = useParams();
@@ -31,7 +31,7 @@ const EditOrderComponent = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await fetch(`http://localhost:3002/order/ten-khach-hang/${Id}`);
+                const response = await fetch(`${API_URL}/order/ten-khach-hang/${Id}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -65,7 +65,7 @@ const EditOrderComponent = () => {
           return;
         }
         try {
-          const response = await fetch(`http://localhost:3002/admin/order/${Id}`, {
+          const response = await fetch(`${API_URL}/admin/order/${Id}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',

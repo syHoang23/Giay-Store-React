@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
-
+const API_URL = process.env.REACT_APP_API_URL;
 const DetailCompoment= () => {
     const { Id } = useParams(); // Lấy thông tin ID sản phẩm từ URL
     const [soLuongTheoSize, setSoLuongTheoSize] = useState(null); // State để lưu thông tin sản phẩm
@@ -19,7 +19,7 @@ const DetailCompoment= () => {
         const fetchProduct = async () => {
             try {
                 // Gọi API để lấy thông tin sản phẩm dựa trên Id được truyền từ URL
-                const response = await fetch(`http://localhost:3002/products/${Id}`);
+                const response = await fetch(`${API_URL}/products/${Id}`);
                 // Kiểm tra nếu response không thành công, ném ra một lỗi
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -38,7 +38,7 @@ const DetailCompoment= () => {
         const fetchTonKho = async () => {
             try {
                 // Gọi API để lấy thông tin sản phẩm dựa trên Id được truyền từ URL
-                const response = await fetch(`http://localhost:3002/products/tonkho/${Id}`);
+                const response = await fetch(`${API_URL}/products/tonkho/${Id}`);
                 // Kiểm tra nếu response không thành công, ném ra một lỗi
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -65,7 +65,7 @@ const addToCart = async () => {
     if (USER_ID) {
         try {
             // Gửi yêu cầu POST đến endpoint '/cart/adds' để thêm sản phẩm vào giỏ hàng
-            const response = await fetch('http://localhost:3002/cart/adds', {
+            const response = await fetch(`${API_URL}/cart/adds`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

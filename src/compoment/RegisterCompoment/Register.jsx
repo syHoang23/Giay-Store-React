@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+const API_URL = process.env.REACT_APP_API_URL;
 const RegisterComponent = () => {
   const [TenDangNhap, setTenDangNhap] = useState(''); // State lưu trữ tên người dùng
   const [MatKhau, setMatKhau] = useState(''); 
@@ -23,7 +23,7 @@ const RegisterComponent = () => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:3002/users/register', {
+      const response = await fetch(`${API_URL}/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

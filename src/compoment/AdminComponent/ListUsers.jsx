@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 // import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-
+const API_URL = process.env.REACT_APP_API_URL;
 // Component để hiển thị danh sách người dùng
 const ListUser = () => {
     // State để lưu danh sách người dùng và trang hiện tại
@@ -15,7 +15,7 @@ const ListUser = () => {
     // Hàm fetch dữ liệu người dùng từ server
     const fetchData = async () => {
         try {
-            const response = await fetch('http://localhost:3002/admin/users');
+            const response = await fetch(`${API_URL}/admin/users`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
