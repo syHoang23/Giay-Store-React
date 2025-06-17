@@ -94,7 +94,7 @@ const ListOrder = () => {
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatter.format(product[3])}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product[4]}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product[5]}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">COD</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product[7]}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(product[6]).toLocaleDateString("vi-VN")}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             {/* Nút "Edit" để chuyển hướng đến trang chỉnh sửa sản phẩm */}
