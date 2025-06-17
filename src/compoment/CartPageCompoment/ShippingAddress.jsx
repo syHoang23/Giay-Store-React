@@ -25,7 +25,7 @@ export default function ShippingAddress({ onChange }) {
 
   useEffect(() => {
     onChange({ province, district, addressDetail });
-  }, [province, district, addressDetail]);
+  }, [province, district, addressDetail, onChange]);
 
   return (
     <>
