@@ -61,67 +61,68 @@ const CartComponent= () => {
     const handleConfirmCheckout = async () => {
         const { province, district, addressDetail } = address;
         if (!province || !district || !addressDetail) {
-            alert('Vui lòng chọn đầy đủ tỉnh, huyện và điền địa chỉ cụ thể.');
+            alert('Vui lòng điền đầy đủ địa chỉ.');
             return;
         }
         const fullAddress = `${addressDetail}, ${district}, ${province}`;
-    // Lấy tất cả SanPhamID từ giỏ hàng
-    const chiTietDonHang = cart.map(item => ({
-        SanPhamID: item[1],  // ID sản phẩm
-        SoLuong: item[3],    // Số lượng
-        Gia: item[4]      ,  // Giá
-        KichThuoc: item[5]   // Kích thước
-    }));
-    // Thêm logic xử lý xác nhận thanh toán tại đây
-    alert("Đã xác nhận địa chỉ: " + fullAddress);
-    setIsModalOpen(false); // Đóng modal sau khi xác nhận
-    try {
-        const response = await fetch(`${API_URL}/order/adds`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            // Dữ liệu gửi đi bao gồm thông tin sản phẩm, số lượng và USER_ID
-            body: JSON.stringify({
-                KhachHangID: USER_ID, // ID của người dùng đã đăng nhập
-                TongGiaTri: totalSubtotal,
-                TrangThai: "Đang xử lý",
-                DiaChiGiaoHang: fullAddress,
-                ChiTietDonHang: chiTietDonHang
-            })
-        });
-        // Kiểm tra nếu yêu cầu thành công (status code 200)
-        if (response.ok) {
-            alert('Đơn hàng được khởi tạo thành công!');
-            try {
-                const responses = await fetch(`${API_URL}/cart/delete-all-item`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ KhachHangID: USER_ID })
-                });
-        
-                const result = await responses.json(); // Phân tích phản hồi JSON
-                if (responses.ok) {
-                    alert(result.message || 'Tất cả sản phẩm đã được xóa khỏi giỏ hàng');
-                } else {
-                    alert(result.message || 'Không thể xóa tất cả sản phẩm khỏi giỏ hàng');
+        // Lấy tất cả SanPhamID từ giỏ hàng
+        const chiTietDonHang = cart.map(item => ({
+            SanPhamID: item[1],  // ID sản phẩm
+            SoLuong: item[3],    // Số lượng
+            Gia: item[4]      ,  // Giá
+            KichThuoc: item[5]   // Kích thước
+        }));
+        // Thêm logic xử lý xác nhận thanh toán tại đây
+        alert("Đã xác nhận địa chỉ: " + fullAddress);
+        setIsModalOpen(false); // Đóng modal sau khi xác nhận
+        try {
+            const response = await fetch(`${API_URL}/order/adds`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                // Dữ liệu gửi đi bao gồm thông tin sản phẩm, số lượng và USER_ID
+                body: JSON.stringify({
+                    KhachHangID: USER_ID, // ID của người dùng đã đăng nhập
+                    TongGiaTri: totalSubtotal,
+                    TrangThai: "Đang xử lý",
+                    DiaChiGiaoHang: fullAddress,
+                    ChiTietDonHang: chiTietDonHang,
+                    PhuongThucThanhToan: phuongThucThanhToan
+                })
+            });
+            // Kiểm tra nếu yêu cầu thành công (status code 200)
+            if (response.ok) {
+                alert('Đơn hàng được khởi tạo thành công!');
+                try {
+                    const responses = await fetch(`${API_URL}/cart/delete-all-item`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ KhachHangID: USER_ID })
+                    });
+            
+                    const result = await responses.json(); // Phân tích phản hồi JSON
+                    if (responses.ok) {
+                        alert(result.message || 'Tất cả sản phẩm đã được xóa khỏi giỏ hàng');
+                    } else {
+                        alert(result.message || 'Không thể xóa tất cả sản phẩm khỏi giỏ hàng');
+                    }
+                } catch (error) {
+                    alert(`Lỗi xóa tất cả sản phẩm khỏi giỏ hàng: ${error}`);
                 }
-            } catch (error) {
-                alert(`Lỗi xóa tất cả sản phẩm khỏi giỏ hàng: ${error}`);
+                navigate('/'); // Điều hướng người dùng về trang đơn hàng
+            } else {
+                // Hiển thị thông báo lỗi nếu yêu cầu không thành công
+                const errorData = await response.json();
+                alert('Lỗi khởi tạo đơn hàng, sản phẩm không đủ số lượng trong kho. ',errorData.message);
             }
-            navigate('/'); // Điều hướng người dùng về trang đơn hàng
-        } else {
-            // Hiển thị thông báo lỗi nếu yêu cầu không thành công
-            const errorData = await response.json();
-            alert('Lỗi khởi tạo đơn hàng, sản phẩm không đủ số lượng trong kho. ',errorData.message);
+        } catch (error) {
+            // Xử lý lỗi nếu có
+            console.error('Lỗi tạo đơn hàng:', error);
         }
-    } catch (error) {
-        // Xử lý lỗi nếu có
-        console.error('Lỗi tạo đơn hàng:', error);
-    }
-};
+    };
 // Hàm xử lý khi người dùng xóa một sản phẩm khỏi giỏ hàng
 const handleDeleteItem = async (KhachHangID,SanPhamID) => {
     try {
@@ -277,6 +278,7 @@ const updateSubtotal = (updatedCart) => {
                 <p><strong>Ngân hàng:</strong> MB Bank</p>
                 <p><strong>Số tài khoản:</strong> 094 255 9378</p>
                 <p><strong>Chủ tài khoản:</strong> PHAM VAN SY HOANG</p>
+                <p><strong>Số tiền:<span className="text-red-600"> {formatter.format(totalSubtotal)}</span></strong></p>
                 <img src={QRUrl} alt="QR chuyển khoản" className="w-48 h-48" />
                 <p className="mt-2">Quét mã QR để thanh toán</p>
             </div>
