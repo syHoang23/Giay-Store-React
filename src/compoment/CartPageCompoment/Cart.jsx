@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import ShippingAddress from './ShippingAddress';
 const API_URL = process.env.REACT_APP_API_URL;
@@ -55,6 +55,9 @@ const CartComponent= () => {
     const handleCheckout = () => {
         setIsModalOpen(true); // Mở modal khi nhấn Checkout
     };
+    const handleAddressChange = useCallback((value) => {
+        setAddress(value);
+    }, []);
     const handleConfirmCheckout = async () => {
         const { province, district, addressDetail } = address;
         if (!province || !district || !addressDetail) {
@@ -278,7 +281,7 @@ const updateSubtotal = (updatedCart) => {
                 <p className="mt-2">Quét mã QR để thanh toán</p>
             </div>
             )}
-            <ShippingAddress onChange={(value) => setAddress(value)} />
+            <ShippingAddress onChange={handleAddressChange} />
             <div className="flex justify-end gap-4">
                 <button
                 onClick={() => setIsModalOpen(false)}
