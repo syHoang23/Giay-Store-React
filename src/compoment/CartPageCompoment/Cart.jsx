@@ -237,9 +237,9 @@ const updateSubtotal = (updatedCart) => {
                       <h6 className="font-manrope font-bold text-3xl lead-10 text-indigo-600">{formatter.format(totalSubtotal)}</h6>
                   </div>
               </div>
-              <div className="max-lg:max-w-lg max-lg:mx-auto">
-                  <p className="font-normal text-base leading-7 text-gray-500 text-center mb-5 mt-6">Shipping taxes, and discounts calculated at checkout</p>
-                  <button onClick={handleCheckout} className="rounded-full py-4 px-6 bg-indigo-600 text-white font-semibold text-lg w-full text-center transition-all duration-500 hover:bg-indigo-700 ">Checkout</button>
+                <div className="max-lg:max-w-lg max-lg:mx-auto">
+                    <p className="font-normal text-base leading-7 text-gray-500 text-center mb-5 mt-6">Shipping taxes, and discounts calculated at checkout</p>
+                    <button onClick={handleCheckout} disabled={totalSubtotal <= 0} className="rounded-full py-4 px-6 bg-indigo-600 text-white font-semibold text-lg w-full text-center transition-all duration-500 hover:bg-indigo-700 ">Checkout</button>
               </div>
           </div>
         {/* Modal Xác nhận */}
@@ -274,7 +274,7 @@ const updateSubtotal = (updatedCart) => {
                 <p><strong>Ngân hàng:</strong> MB Bank</p>
                 <p><strong>Số tài khoản:</strong> 094 255 9378</p>
                 <p><strong>Chủ tài khoản:</strong> PHAM VAN SY HOANG</p>
-                <img src={QRUrl} alt="QR chuyển khoản" className="w-32 h-32" />
+                <img src={QRUrl} alt="QR chuyển khoản" className="w-48 h-48" />
                 <p className="mt-2">Quét mã QR để thanh toán</p>
             </div>
             )}
