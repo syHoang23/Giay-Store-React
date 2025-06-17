@@ -200,7 +200,7 @@ useEffect(() => {
                           </div>
                           <div className="flex justify-between items-center mt-2">
                             <div className="flex items-center gap-4">
-                                <p className="font-manrope font-bold text-2x leading-9 text-gray-900">Phương Thức Thanh Toán: Thanh toán khi nhận hàng</p>
+                                <p className="font-manrope font-bold text-2x leading-9 text-gray-900">Phương Thức Thanh Toán: <strong>{item[7]==='BankTransfer'?'Chuyển khoản':'Thanh toán khi nhận hàng'}</strong></p>
                             </div>
                               <h6 className="text-indigo-600 font-manrope font-bold text-2xl leading-9 text-right">Tổng Giá Trị: {formatter.format(item[3])}</h6>
                           </div>
