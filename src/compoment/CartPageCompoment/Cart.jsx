@@ -1,63 +1,67 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import ShippingAddress from './ShippingAddress';
 const API_URL = process.env.REACT_APP_API_URL;
 const CartComponent= () => {
     // State để lưu thông tin giỏ hàng và tổng subtotal
-const [cart, setCart] = useState([]);
-const [totalSubtotal, setTotalSubtotal] = useState(0);
-const [isModalOpen, setIsModalOpen] = useState(false); // State để điều khiển modal
-const [address, setAddress] = useState(""); // State lưu địa chỉ nhập vào
-const USER_ID = sessionStorage.getItem('USER_ID'); // Lấy USER_ID từ sessionStorage để thêm vào giỏ hàng
-var tenKhachHang='';
-const formatter = new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND'
-  });
-const navigate = useNavigate();
-
-// Lấy USER_ID của người dùng đã đăng nhập từ sessionStorage
-const loggedInUser_ID = sessionStorage.getItem('USER_ID');
-const loggedInUser_NAME = sessionStorage.getItem('USER_NAME');
-tenKhachHang=loggedInUser_NAME;
-// Hàm fetch thông tin giỏ hàng từ server
-const fetchCart = async () => {
-    try {
-        const response = await fetch(`${API_URL}/cart/cart-info`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ KhachHangID: loggedInUser_ID })
-        });
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+    const [cart, setCart] = useState([]);
+    const [totalSubtotal, setTotalSubtotal] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false); // State để điều khiển modal
+    const [address, setAddress] = useState({ province: '', district: '', addressDetail: '' });
+    const [phuongThucThanhToan, setPhuongThucThanhToan] = useState('COD');
+    const USER_ID = sessionStorage.getItem('USER_ID'); // Lấy USER_ID từ sessionStorage để thêm vào giỏ hàng
+    var tenKhachHang='';
+    const formatter = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+    });
+    const navigate = useNavigate();
+    // Lấy USER_ID của người dùng đã đăng nhập từ sessionStorage
+    const loggedInUser_ID = sessionStorage.getItem('USER_ID');
+    const loggedInUser_NAME = sessionStorage.getItem('USER_NAME');
+    tenKhachHang=loggedInUser_NAME;
+    const QRUrl = `https://img.vietqr.io/image/MB-0942559378-qr_only.png?amount=${totalSubtotal}&addInfo=${USER_ID} ${tenKhachHang} Thanh Toan Shop Giay&accountName=PHAM%20VAN%20SY%20HOANG`;
+    // Hàm fetch thông tin giỏ hàng từ server
+    const fetchCart = async () => {
+        try {
+            const response = await fetch(`${API_URL}/cart/cart-info`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ KhachHangID: loggedInUser_ID })
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const cartinfo = await response.json();
+            // Cập nhật state với thông tin giỏ hàng mới
+            setCart(cartinfo);
+            // Tính tổng Subtotal
+            let sum = 0;
+            cartinfo.forEach(item => {
+                sum += item[3] * item[4];
+            });
+            setTotalSubtotal(sum);
+        } catch (error) {
+            console.error('Error fetching product:', error);
         }
-        const cartinfo = await response.json();
-        // Cập nhật state với thông tin giỏ hàng mới
-        setCart(cartinfo);
-        // Tính tổng Subtotal
-        let sum = 0;
-        cartinfo.forEach(item => {
-            sum += item[3] * item[4];
-        });
-        setTotalSubtotal(sum);
-    } catch (error) {
-        console.error('Error fetching product:', error);
-    }
-};
-useEffect(() => {
-    // Gọi hàm fetchCart khi component được mount và khi USER_ID thay đổi
-    fetchCart();
-}, [loggedInUser_ID]);
+    };
+    useEffect(() => {
+        // Gọi hàm fetchCart khi component được mount và khi USER_ID thay đổi
+        fetchCart();
+    }, []);
 
-const handleCheckout = () => {
-    setIsModalOpen(true); // Mở modal khi nhấn Checkout
-};
-const handleConfirmCheckout = async () => {
-    if (!address) {
-      alert("Vui lòng nhập địa chỉ giao hàng.");
-      return;
-    }
+    const handleCheckout = () => {
+        setIsModalOpen(true); // Mở modal khi nhấn Checkout
+    };
+    const handleConfirmCheckout = async () => {
+        const { province, district, addressDetail } = address;
+        if (!province || !district || !addressDetail) {
+            alert('Vui lòng chọn đầy đủ tỉnh, huyện và điền địa chỉ cụ thể.');
+            return;
+        }
+        const fullAddress = `${addressDetail}, ${district}, ${province}`;
     // Lấy tất cả SanPhamID từ giỏ hàng
     const chiTietDonHang = cart.map(item => ({
         SanPhamID: item[1],  // ID sản phẩm
@@ -66,7 +70,7 @@ const handleConfirmCheckout = async () => {
         KichThuoc: item[5]   // Kích thước
     }));
     // Thêm logic xử lý xác nhận thanh toán tại đây
-    alert("Đã xác nhận địa chỉ: " + address);
+    alert("Đã xác nhận địa chỉ: " + fullAddress);
     setIsModalOpen(false); // Đóng modal sau khi xác nhận
     try {
         const response = await fetch(`${API_URL}/order/adds`, {
@@ -79,7 +83,7 @@ const handleConfirmCheckout = async () => {
                 KhachHangID: USER_ID, // ID của người dùng đã đăng nhập
                 TongGiaTri: totalSubtotal,
                 TrangThai: "Đang xử lý",
-                DiaChiGiaoHang: address,
+                DiaChiGiaoHang: fullAddress,
                 ChiTietDonHang: chiTietDonHang
             })
         });
@@ -241,7 +245,7 @@ const updateSubtotal = (updatedCart) => {
         {/* Modal Xác nhận */}
         {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg max-h-[80vh] overflow-y-auto">
             <h3 className="text-xl font-bold mb-4">Xác nhận đơn hàng</h3>
             {/* Tổng giá trị sản phẩm */}
             <div className="flex justify-between items-center mb-4">
@@ -256,14 +260,25 @@ const updateSubtotal = (updatedCart) => {
                 placeholder="Nhập địa chỉ của bạn"
                 readOnly
             />
-            <label className="block text-gray-700 text-sm font-bold mb-2">Địa chỉ giao hàng:</label>
-            <input
-                type="text"
+            <label className="block text-gray-700 text-sm font-bold mb-2">Phương thức thanh toán:</label>
+            <select
                 className="w-full border border-gray-300 rounded-lg p-2 mb-4"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                placeholder="Nhập địa chỉ của bạn"
-            />
+                value={phuongThucThanhToan}
+                onChange={(e) => setPhuongThucThanhToan(e.target.value)}
+                >
+                <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+                <option value="BankTransfer">Chuyển khoản ngân hàng</option>
+            </select>
+            {phuongThucThanhToan === 'BankTransfer' && (
+            <div className="bg-gray-50 border p-3 rounded mb-4">
+                <p><strong>Ngân hàng:</strong> MB Bank</p>
+                <p><strong>Số tài khoản:</strong> 094 255 9378</p>
+                <p><strong>Chủ tài khoản:</strong> PHAM VAN SY HOANG</p>
+                <img src={QRUrl} alt="QR chuyển khoản" className="w-32 h-32" />
+                <p className="mt-2">Quét mã QR để thanh toán</p>
+            </div>
+            )}
+            <ShippingAddress onChange={(value) => setAddress(value)} />
             <div className="flex justify-end gap-4">
                 <button
                 onClick={() => setIsModalOpen(false)}
