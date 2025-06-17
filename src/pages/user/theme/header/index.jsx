@@ -35,17 +35,14 @@ const Header = () => {
 
       <div id="menu">
         <div className="item">
-          <a href="/">Trang chủ</a>
+          <a className='hover:text-blue-800' href="/">Trang chủ</a>
         </div>
         <div className="item">
-          <a href="/product">Tìm kiếm</a>
+          <a className='hover:text-blue-800' href="/product">Tìm kiếm</a>
         </div>
         <div className="item">
-          <a href="/order">Đơn Hàng</a>
+          <a className='hover:text-blue-800' href="/order">Đơn Hàng</a>
         </div>
-        {/* <div className="item">
-          <a href="/">Đánh giá</a>
-        </div> */}
       </div>
 
       <div id="actions">

@@ -1,5 +1,5 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
-
+@import 'tailwindcss/tailwind.css';
 .boy {
     margin-top: 10px;
 }
