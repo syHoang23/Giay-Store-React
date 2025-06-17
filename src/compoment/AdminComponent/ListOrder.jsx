@@ -78,6 +78,7 @@ const ListOrder = () => {
                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tổng giá trị</th>
                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Địa chỉ</th>
+                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phương thức thanh toán</th>
                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày giao dự kiến</th>
                                     <th scope="col" className="relative px-6 py-3"><span className="sr-only">Edit</span></th>
                                     <th scope="col" className="relative px-6 py-3"><span className="sr-only">Check</span></th>
@@ -93,6 +94,7 @@ const ListOrder = () => {
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatter.format(product[3])}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product[4]}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product[5]}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">COD</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(product[6]).toLocaleDateString("vi-VN")}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             {/* Nút "Edit" để chuyển hướng đến trang chỉnh sửa sản phẩm */}
