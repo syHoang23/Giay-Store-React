@@ -40,7 +40,7 @@ const CartComponent= () => {
             // Tính tổng Subtotal
             let sum = 0;
             cartinfo.forEach(item => {
-                sum += item[3] * item[4];
+                sum += item[4] * item[5];
             });
             setTotalSubtotal(sum);
         } catch (error) {
@@ -67,10 +67,10 @@ const CartComponent= () => {
         const fullAddress = `${addressDetail}, ${district}, ${province}`;
         // Lấy tất cả SanPhamID từ giỏ hàng
         const chiTietDonHang = cart.map(item => ({
-            SanPhamID: item[1],  // ID sản phẩm
-            SoLuong: item[3],    // Số lượng
-            Gia: item[4]      ,  // Giá
-            KichThuoc: item[5]   // Kích thước
+            SanPhamID: item[2],  // ID sản phẩm
+            SoLuong: item[4],    // Số lượng
+            Gia: item[5]      ,  // Giá
+            KichThuoc: item[6]   // Kích thước
         }));
         // Thêm logic xử lý xác nhận thanh toán tại đây
         alert("Đã xác nhận địa chỉ: " + fullAddress);
@@ -112,7 +112,7 @@ const CartComponent= () => {
                 } catch (error) {
                     alert(`Lỗi xóa tất cả sản phẩm khỏi giỏ hàng: ${error}`);
                 }
-                navigate('/'); // Điều hướng người dùng về trang đơn hàng
+                navigate('/order'); // Điều hướng người dùng về trang đơn hàng
             } else {
                 // Hiển thị thông báo lỗi nếu yêu cầu không thành công
                 const errorData = await response.json();
@@ -124,14 +124,14 @@ const CartComponent= () => {
         }
     };
 // Hàm xử lý khi người dùng xóa một sản phẩm khỏi giỏ hàng
-const handleDeleteItem = async (KhachHangID,SanPhamID) => {
+const handleDeleteItem = async (GioHangID) => {
     try {
         const response = await fetch(`${API_URL}/cart/delete-item`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ KhachHangID: KhachHangID, SanPhamID: SanPhamID })
+            body: JSON.stringify({ GioHangID: GioHangID })
         });
 
         const result = await response.json(); // Phân tích phản hồi JSON
@@ -152,7 +152,7 @@ const handleIncreaseQuantity = (index) => {
     // Tạo một bản sao của giỏ hàng để thay đổi mà không làm thay đổi trực tiếp giỏ hàng ban đầu
     const updatedCart = [...cart];
     // Tăng số lượng sản phẩm trong mục đi 1 đơn vị
-    updatedCart[index][3]++;
+    updatedCart[index][4]++;
     // Cập nhật giỏ hàng với số lượng sản phẩm mới đã tăng
     setCart(updatedCart);
     // Gọi hàm cập nhật tổng Subtotal sau khi thay đổi số lượng sản phẩm
@@ -165,9 +165,9 @@ const handleDecreaseQuantity = (index) => {
     // Tạo một bản sao của giỏ hàng để thay đổi mà không làm thay đổi trực tiếp giỏ hàng ban đầu
     const updatedCart = [...cart];
     // Kiểm tra nếu số lượng sản phẩm trong mục được giảm lớn hơn 1
-    if (updatedCart[index][3] > 1) {
+    if (updatedCart[index][4] > 1) {
         // Giảm số lượng sản phẩm trong mục đi 1 đơn vị
-        updatedCart[index][3]--;
+        updatedCart[index][4]--;
         // Cập nhật giỏ hàng với số lượng sản phẩm mới đã giảm
         setCart(updatedCart);
         // Gọi hàm cập nhật tổng Subtotal sau khi thay đổi số lượng sản phẩm
@@ -181,7 +181,7 @@ const updateSubtotal = (updatedCart) => {
     // Duyệt qua mỗi mục trong giỏ hàng đã cập nhật
     updatedCart.forEach(item => {
         // Tính toán Subtotal cho mỗi mục bằng cách nhân giá của sản phẩm (phần tử thứ 7 trong mảng) với số lượng sản phẩm (phần tử thứ 4 trong mảng)
-        sum += item[4] * item[3]; // Giả sử Subtotal được lưu trong phần tử thứ 7 của mỗi mục
+        sum += item[5] * item[4]; // Giả sử Subtotal được lưu trong phần tử thứ 7 của mỗi mục
     });
     // Cập nhật tổng Subtotal mới
     setTotalSubtotal(sum);
@@ -196,12 +196,12 @@ const updateSubtotal = (updatedCart) => {
               {cart.map((item, index) => (
                   <div key={index} className="rounded-3xl border-2 border-gray-200 p-4 lg:p-8 grid grid-cols-12 mb-8 max-lg:max-w-lg max-lg:mx-auto gap-y-4">
                       <div className="col-span-12 lg:col-span-2 img box">
-                          <img src={item[6]} alt="img" className="max-lg:w-full lg:w-[180px]" />
+                          <img src={item[7]} alt="img" className="max-lg:w-full lg:w-[180px]" />
                       </div>
                       <div className="col-span-12 lg:col-span-10 detail w-full lg:pl-3">
                           <div className="flex items-center justify-between w-full mb-4">
-                              <h5 className="font-manrope font-bold text-2xl leading-9 text-gray-900">{item[1]}. {item[2]}</h5>
-                              <button onClick={() => handleDeleteItem(item[0], item[1])} className="rounded-full group flex items-center justify-center focus-within:outline-red-500">
+                              <h5 className="font-manrope font-bold text-2xl leading-9 text-gray-900">{item[2]}. {item[3]}</h5>
+                              <button onClick={() => handleDeleteItem(item[0])} className="rounded-full group flex items-center justify-center focus-within:outline-red-500">
                                   <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
                                       <circle className="fill-red-50 transition-all duration-500 group-hover:fill-red-400" cx="17" cy="17" r="17" fill="" />
                                       <path className="stroke-red-500 transition-all duration-500 group-hover:stroke-white" d="M14.1673 13.5997V12.5923C14.1673 11.8968 14.7311 11.333 15.4266 11.333H18.5747C19.2702 11.333 19.834 11.8968 19.834 12.5923V13.5997M19.834 13.5997C19.834 13.5997 14.6534 13.5997 11.334 13.5997C6.90804 13.5998 27.0933 13.5998 22.6673 13.5997C21.5608 13.5997 19.834 13.5997 19.834 13.5997ZM12.4673 13.5997H21.534V18.8886C21.534 20.6695 21.534 21.5599 20.9807 22.1131C20.4275 22.6664 19.5371 22.6664 17.7562 22.6664H16.2451C14.4642 22.6664 13.5738 22.6664 13.0206 22.1131C12.4673 21.5599 12.4673 20.6695 12.4673 18.8886V13.5997Z" stroke="#EF4444" strokeWidth="1.6" strokeLinecap="round" />
@@ -219,7 +219,7 @@ const updateSubtotal = (updatedCart) => {
                                     type="text" 
                                     id="number" 
                                     className="border border-gray-200 rounded-full w-12 aspect-square outline-none text-gray-900 font-semibold text-sm py-1.5 px-3 bg-gray-100 text-center"  
-                                    value={item[3]}  
+                                    value={item[4]}  
                                     readOnly   
                                 />
                                 <button className="group rounded-[50px] border border-gray-200 shadow-sm shadow-transparent p-2.5 flex items-center justify-center bg-white transition-all duration-500 hover:shadow-gray-200 hover:bg-gray-50 hover:border-gray-300 focus-within:outline-gray-300" onClick={() => handleIncreaseQuantity(index)}>
@@ -227,9 +227,9 @@ const updateSubtotal = (updatedCart) => {
                                         <path d="M3.75 9.5H14.25M9 14.75V4.25" stroke="" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 </button>
-                                <p className="font-manrope font-bold text-2x leading-9 text-gray-900">Size: {item[5]}</p>
+                                <p className="font-manrope font-bold text-2x leading-9 text-gray-900">Size: {item[6]}</p>
                             </div>
-                              <h6 className="text-indigo-600 font-manrope font-bold text-2xl leading-9 text-right">Giá sản phẩm: {formatter.format(item[4])}</h6>
+                              <h6 className="text-indigo-600 font-manrope font-bold text-2xl leading-9 text-right">Giá sản phẩm: {formatter.format(item[5])}</h6>
                           </div>
                       </div>
                   </div>
